@@ -7,12 +7,15 @@ const {
   current,
   updateSubscription,
   updateAvatar,
+  verifyEmail,
+  resendVerifyEmail,
 } = require("../../controllers/auth");
 
 const {
   userRegisterSchema,
   userLoginSchema,
   userSubscriptionSchema,
+  emailSchema,
 } = require("../../schemas/users");
 
 const { validateData, unauthorized, upload } = require("../../middlewares");
@@ -35,5 +38,9 @@ router.patch(
 );
 
 router.patch("/avatars", unauthorized, upload.single("avatars"), updateAvatar);
+
+router.get("/verify/:verificationToken", verifyEmail);
+
+router.post("/verify", validateData(emailSchema), resendVerifyEmail);
 
 module.exports = router;
